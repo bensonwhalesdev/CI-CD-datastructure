@@ -1,32 +1,65 @@
-name: Node.js CI/CD Demo
+# name: Node.js CI/CD Demo
+
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
+
+# jobs:
+#   build-test-deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 18
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       - name: Run tests
+#         run: npm test
+
+#       - name: Simulate deployment
+#         if: success()
+#         run: |
+#           echo "✅ All tests passed."
+#           echo "🚀 Deploying to production server..."
+
+name: Vercel Preview Deployment
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
-  build-test-deploy:
+  deploy-preview:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project to Vercel
+        id: deploy
+        run: echo "::set-output name=url::$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})"
+      - name: Create GitHub Deployment
+        uses: bobheadxi/deployments@v0.7.0
         with:
-          node-version: 18
+          step: end
+          token: ${{ secrets.GITHUB_TOKEN }}
+          url: ${{ steps.deploy.outputs.url }}
+          status: success
+          env: preview
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
-
-      - name: Simulate deployment
-        if: success()
-        run: |
-          echo "✅ All tests passed."
-          echo "🚀 Deploying to production server..."

@@ -1,7 +1,7 @@
 {
   "name": "data-structure",
   "version": "1.0.0",
-  "type": "module",
+  "type": "commonjs",
   "main": "arr.js",
   "scripts": {
     "start": "node index.js",

@@ -6,6 +6,8 @@ app.get("/", (req, res) => {
   res.send("My name is Admin");
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`)
+// })
+
+module.exports = app;

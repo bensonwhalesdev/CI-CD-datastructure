@@ -5,7 +5,7 @@ deployment:
   
    # 2. Install/Update Node.js Dependencies
    # This command must be run in the directory containing package.json
-   - /usr/bin/npm install --prefix /home/dclujrdb/api2
+   - /usr/bin/npm install --prefix /home/devbouhv/api2
   
    # 3. Restart the Node.js Application
    # Passenger needs to be restarted to pick up the new code and dependencies.

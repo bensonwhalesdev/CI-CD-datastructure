@@ -1,0 +1,13 @@
+deployment:
+ tasks:
+   # 1. Prepare Environment (e.g., set up paths, although Passenger handles most of this)
+   - export PATH=/opt/cpanel/ea-nodejs18/bin:$PATH
+  
+   # 2. Install/Update Node.js Dependencies
+   # This command must be run in the directory containing package.json
+   - /usr/bin/npm install --prefix /home/dclujrdb/server
+  
+   # 3. Restart the Node.js Application
+   # Passenger needs to be restarted to pick up the new code and dependencies.
+   # We use the 'passenger-config restart-app' command pointing to the app's root directory.
+   - /usr/bin/passenger-config restart-app --ignore-app-not-running /home/dclujrdb/server

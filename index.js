@@ -1,13 +1,39 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+
+app.use((req, res, next)=>{
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    next();
+});
+
+const products = [
+  { id: 1, name: "Laptop", price: 999 },
+  { id: 2, name: "Headphones", price: 199 },
+  { id: 3, name: "Smartphone", price: 799 },
+  { id: 4, name: "Keyboard", price: 49 },
+  { id: 5, name: "Mouse", price: 29 },
+  { id: 6, name: "Monitor", price: 249 },
+  { id: 7, name: "Speaker", price: 149 },
+  { id: 8, name: "Webcam", price: 89 },
+  { id: 9, name: "Printer", price: 129 },
+  { id: 10, name: "USB Drive", price: 19 }
+];
+
+const router = express.Router();
+
+router.get("/", (req, res) => {
+  res.json(products);
+});
+
+app.use("/api", router);
 
 app.get("/", (req, res) => {
   res.send("My name is Admin");
-})
+});
+app.use('/', router)
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`)
-// })
-
-module.exports = app;

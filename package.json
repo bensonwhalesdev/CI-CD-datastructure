@@ -2,7 +2,7 @@
   "name": "data-structure",
   "version": "1.0.0",
   "type": "commonjs",
-  "main": "arr.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "jest"
@@ -12,7 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "jest": "^30.2.0",

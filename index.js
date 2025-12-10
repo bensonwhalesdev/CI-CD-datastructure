@@ -2,12 +2,28 @@ require('dotenv').config();
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
+const bodyParser = require('body-parser');
+const { exec } = require('child_process');
 
 app.use((req, res, next)=>{
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     next();
 });
 
+app.use(bodyParser.json());
+
+// Webhook endpoint
+app.post('/webhook', (req, res) => {
+    // Call the deploy script
+    exec('node deploy.js', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${stderr}`);
+            return res.status(500).send('Deployment failed');
+        }
+        console.log(stdout);
+        res.status(200).send('Deployment successful');
+    });
+});
 const products = [
   { id: 1, name: "Laptop", price: 999 },
   { id: 2, name: "Headphones", price: 199 },

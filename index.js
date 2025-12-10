@@ -12,6 +12,10 @@ app.use((req, res, next)=>{
 
 app.use(bodyParser.json());
 
+app.get('/webhook', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Webhook endpoint ready' });
+});
+
 // Webhook endpoint
 app.post('/webhook', (req, res) => {
     // Call the deploy script

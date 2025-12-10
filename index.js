@@ -12,22 +12,7 @@ app.use((req, res, next)=>{
 
 app.use(bodyParser.json());
 
-app.get('/webhook', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Webhook endpoint ready' });
-});
 
-// Webhook endpoint
-app.post('/webhook', (req, res) => {
-    // Call the deploy script
-    exec('node deploy.js', (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error: ${stderr}`);
-            return res.status(500).send('Deployment failed');
-        }
-        console.log(stdout);
-        res.status(200).send('Deployment successful');
-    });
-});
 const products = [
   { id: 1, name: "Laptop", price: 999 },
   { id: 2, name: "Headphones", price: 199 },
@@ -45,6 +30,22 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   res.json(products);
+});
+
+app.get('/webhook', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Webhook endpoint ready' });
+});
+
+app.post('/webhook', (req, res) => {
+    // Call the deploy script
+    exec('node deploy.js', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${stderr}`);
+            return res.status(500).send('Deployment failed');
+        }
+        console.log(stdout);
+        res.status(200).send('Deployment successful');
+    });
 });
 
 app.use("/api", router);

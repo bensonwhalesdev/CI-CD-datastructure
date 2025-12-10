@@ -32,11 +32,11 @@ router.get("/", (req, res) => {
   res.json(products);
 });
 
-app.get('/webhook', (req, res) => {
+router.get('/webhook', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Webhook endpoint ready' });
 });
 
-app.post('/webhook', (req, res) => {
+router.post('/webhook', (req, res) => {
     // Call the deploy script
     exec('node deploy.js', (error, stdout, stderr) => {
         if (error) {
@@ -53,7 +53,7 @@ app.use("/api", router);
 app.get("/", (req, res) => {
   res.send("My name is Admin");
 });
-app.use('/', router)
+// app.use('/', router)
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
